@@ -63,6 +63,7 @@ jobs:
             ${{ github.event.issue.body }}
 
             ## Diagnostic comment format
+            Write the comment in GitHub-flavored Markdown (headings, bold, code spans, bullet lists).
             Your comment must include:
             - **Summary**: one sentence restating the problem
             - **Affected area**: which file(s) — game.js, style.css, or index.html — and which function(s)
