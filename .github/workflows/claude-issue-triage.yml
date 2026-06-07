@@ -1,0 +1,80 @@
+name: Claude Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Ensure triage labels exist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create "bug"           --color "d73a4a" --description "Something isn't working correctly"        --force
+          gh label create "enhancement"   --color "a2eeef" --description "New feature or improvement"               --force
+          gh label create "performance"   --color "e4e669" --description "Speed, frame rate, or lag issues"         --force
+          gh label create "gameplay"      --color "0075ca" --description "Game mechanics, pieces, scoring, levels"  --force
+          gh label create "ui"            --color "7057ff" --description "Canvas rendering, visuals, or styling"    --force
+          gh label create "controls"      --color "008672" --description "Keyboard input or game controls"          --force
+          gh label create "documentation" --color "cfd3d7" --description "README, CLAUDE.md, or code comments"     --force
+          gh label create "question"      --color "d876e3" --description "Needs clarification or is a question"    --force
+
+      - name: Analyze issue with Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: '--allowed-tools Bash(gh issue *)'
+          prompt: |
+            You are an automated issue triage assistant for a vanilla JavaScript Tetris game.
+
+            ## Your tasks
+
+            1. Apply one or more labels by running:
+               gh issue edit ${{ github.event.issue.number }} --repo ${{ github.repository }} --add-label "<label>"
+
+            2. Post a single diagnostic comment by running:
+               gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body "<diagnosis>"
+
+            ## Available labels (use exact names)
+            - bug           — Something isn't working correctly
+            - enhancement   — New feature or improvement
+            - performance   — Speed, frame rate, or lag issues
+            - gameplay      — Game mechanics, pieces, scoring, or levels
+            - ui            — Canvas rendering, visual elements, or styling
+            - controls      — Keyboard input or game controls
+            - documentation — README, CLAUDE.md, or code comments
+            - question      — Needs clarification
+
+            ## Issue to analyze
+            Title: ${{ github.event.issue.title }}
+            Body:
+            ${{ github.event.issue.body }}
+
+            ## Diagnostic comment format
+            Your comment must include:
+            - **Summary**: one sentence restating the problem
+            - **Affected area**: which file(s) — game.js, style.css, or index.html — and which function(s)
+            - **Likely root cause**: technical hypothesis based on the codebase
+            - **Suggested investigation**: concrete next step (e.g., "check rotateCW() in game.js around line 60")
+            - **Clarifying questions** (only if the issue is genuinely ambiguous)
+
+            ## Codebase context
+            - game.js (~305 lines, 'use strict', no modules): all game logic
+              - Board: 20×10 array; cells hold 0 or color index 1–7
+              - Key functions: rotateCW(), tryRotate() [wall kicks: offsets 0,-1,1,-2,2],
+                lockPiece(), clearLines(), ghostY(), hardDrop(), spawn(), loop()
+              - Speed: dropInterval = Math.max(100, 1000 - (level-1)*90) ms; level up every 10 lines
+            - style.css: dark/retro theme, 7-color block palette, backdrop-filter overlay
+            - index.html: two <canvas> elements (#board 300×600, #next-canvas 120×120), sidebar
