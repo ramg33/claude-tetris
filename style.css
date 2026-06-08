@@ -4,9 +4,56 @@
   padding: 0;
 }
 
+/* ---- Theme variables ---- */
+:root {
+  --bg-page: #0f0f17;
+  --bg-board: #1a1a25;
+  --bg-panel: #0f0f17;
+  --bg-kbd: #22223a;
+  --border-color: #2a2a3a;
+  --border-kbd: #3a3a5a;
+  --text-primary: #e0e0e0;
+  --text-accent: #7aa2f7;
+  --text-label: #555570;
+  --text-controls: #888;
+  --text-kbd: #aaa;
+  --text-btn: #0f0f17;
+  --btn-bg: #7aa2f7;
+  --btn-hover: #9bbdff;
+  --overlay-bg: rgba(10, 10, 20, 0.75);
+  --title-shadow: rgba(122, 162, 247, 0.4);
+  --board-shadow: rgba(0, 0, 0, 0.6);
+  --toggle-track: #3a3a5a;
+  --toggle-thumb: #7aa2f7;
+  --toggle-label: #555570;
+}
+
+[data-theme="light"] {
+  --bg-page: #f0f2f5;
+  --bg-board: #ffffff;
+  --bg-panel: #f0f2f5;
+  --bg-kbd: #e0e4ee;
+  --border-color: #c0c8e0;
+  --border-kbd: #a0aac0;
+  --text-primary: #1a1a2e;
+  --text-accent: #3366cc;
+  --text-label: #7788aa;
+  --text-controls: #556;
+  --text-kbd: #445;
+  --text-btn: #ffffff;
+  --btn-bg: #3366cc;
+  --btn-hover: #2255bb;
+  --overlay-bg: rgba(200, 210, 230, 0.80);
+  --title-shadow: rgba(51, 102, 204, 0.3);
+  --board-shadow: rgba(0, 0, 0, 0.15);
+  --toggle-track: #c0c8e0;
+  --toggle-thumb: #3366cc;
+  --toggle-label: #7788aa;
+}
+
 body {
-  background: #0f0f17;
-  color: #e0e0e0;
+  background: var(--bg-page);
+  color: var(--text-primary);
   font-family: system-ui, -apple-system, sans-serif;
   display: flex;
   flex-direction: column;
@@ -15,6 +62,7 @@ body {
   gap: 16px;
   min-height: 100vh;
   user-select: none;
+  transition: background 0.2s, color 0.2s;
 }
 
 .game-title {
@@ -22,8 +70,8 @@ body {
   font-size: 42px;
   font-weight: 900;
   letter-spacing: 10px;
-  color: #7aa2f7;
-  text-shadow: 0 0 20px rgba(122, 162, 247, 0.4);
+  color: var(--text-accent);
+  text-shadow: 0 0 20px var(--title-shadow);
 }
 
 .wrapper {
@@ -38,10 +86,10 @@ body {
 
 #board {
   display: block;
-  border: 1px solid #2a2a3a;
-  background: #1a1a25;
+  border: 1px solid var(--border-color);
+  background: var(--bg-board);
   border-radius: 4px;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 40px var(--board-shadow);
 }
 
 /* ---- Panel lateral ---- */
@@ -62,7 +110,7 @@ body {
 .label {
   font-size: 10px;
   letter-spacing: 2px;
-  color: #555570;
+  color: var(--text-label);
   font-weight: 600;
 }
 
@@ -70,14 +118,14 @@ body {
   font-family: 'Courier New', Courier, monospace;
   font-size: 26px;
   font-weight: 700;
-  color: #7aa2f7;
+  color: var(--text-accent);
   letter-spacing: 1px;
 }
 
 #next-canvas {
   display: block;
-  border: 1px solid #2a2a3a;
-  background: #1a1a25;
+  border: 1px solid var(--border-color);
+  background: var(--bg-board);
   border-radius: 4px;
 }
 
@@ -91,20 +139,74 @@ body {
 
 .controls li {
   font-size: 12px;
-  color: #888;
+  color: var(--text-controls);
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
 kbd {
-  background: #22223a;
-  border: 1px solid #3a3a5a;
+  background: var(--bg-kbd);
+  border: 1px solid var(--border-kbd);
   border-radius: 3px;
   padding: 1px 6px;
   font-size: 11px;
   font-family: inherit;
-  color: #aaa;
+  color: var(--text-kbd);
+}
+
+/* ---- Theme toggle ---- */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--toggle-label);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--toggle-track);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background: var(--toggle-thumb);
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.toggle-switch input:checked + .toggle-track::after {
+  transform: translateX(16px);
 }
 
 /* ---- Overlay ---- */
@@ -114,7 +216,7 @@ kbd {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(10, 10, 20, 0.75);
+  background: var(--overlay-bg);
   backdrop-filter: blur(4px);
   border-radius: 4px;
 }
@@ -141,13 +243,13 @@ kbd {
 #overlay-score {
   font-family: 'Courier New', Courier, monospace;
   font-size: 14px;
-  color: #7aa2f7;
+  color: var(--text-accent);
 }
 
 #restart-btn {
   margin-top: 8px;
-  background: #7aa2f7;
-  color: #0f0f17;
+  background: var(--btn-bg);
+  color: var(--text-btn);
   border: none;
   border-radius: 6px;
   padding: 10px 28px;
@@ -159,5 +261,5 @@ kbd {
 }
 
 #restart-btn:hover {
-  background: #9bbdff;
+  background: var(--btn-hover);
 }

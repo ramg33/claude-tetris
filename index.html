@@ -41,6 +41,17 @@
             <li><kbd>P</kbd> pausa</li>
           </ul>
         </div>
+
+        <div class="panel-section">
+          <span class="label">THEME</span>
+          <div class="theme-toggle">
+            <label class="toggle-switch" for="theme-toggle" title="Toggle light/dark mode">
+              <input type="checkbox" id="theme-toggle" />
+              <span class="toggle-track"></span>
+            </label>
+            <label class="theme-toggle-label" for="theme-toggle">LIGHT</label>
+          </div>
+        </div>
       </aside>
     </div>
 
@@ -53,6 +64,25 @@
     </div>
   </div>
 
+  <script>
+    (function () {
+      var toggle = document.getElementById('theme-toggle');
+      var saved = localStorage.getItem('theme');
+      if (saved === 'light') {
+        document.documentElement.dataset.theme = 'light';
+        toggle.checked = true;
+      }
+      toggle.addEventListener('change', function () {
+        if (toggle.checked) {
+          document.documentElement.dataset.theme = 'light';
+          localStorage.setItem('theme', 'light');
+        } else {
+          delete document.documentElement.dataset.theme;
+          localStorage.setItem('theme', 'dark');
+        }
+      });
+    })();
+  </script>
   <script src="game.js"></script>
 </body>
 </html>
