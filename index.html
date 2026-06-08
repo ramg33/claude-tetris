@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tetris</title>
   <link rel="stylesheet" href="style.css" />
+  <script>
+    (function() {
+      if (localStorage.getItem('tetris-theme') === 'light') {
+        document.documentElement.dataset.theme = 'light';
+      }
+    })();
+  </script>
 </head>
 <body>
   <h1 class="game-title">TETRIS</h1>
@@ -31,6 +38,15 @@
           <canvas id="next-canvas" width="120" height="120"></canvas>
         </div>
 
+        <div class="panel-section">
+          <span class="label">THEME</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="theme-toggle" />
+            <span class="toggle-track"></span>
+            <span class="toggle-label">Light</span>
+          </label>
+        </div>
+
         <div class="panel-section controls">
           <span class="label">CONTROLS</span>
           <ul>
@@ -54,5 +70,20 @@
   </div>
 
   <script src="game.js"></script>
+  <script>
+    (function() {
+      var toggle = document.getElementById('theme-toggle');
+      toggle.checked = document.documentElement.dataset.theme === 'light';
+      toggle.addEventListener('change', function(e) {
+        if (e.target.checked) {
+          document.documentElement.dataset.theme = 'light';
+          localStorage.setItem('tetris-theme', 'light');
+        } else {
+          delete document.documentElement.dataset.theme;
+          localStorage.setItem('tetris-theme', 'dark');
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
