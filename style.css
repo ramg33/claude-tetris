@@ -213,6 +213,10 @@ kbd {
   border-radius: 4px;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .overlay.hidden {
   display: none;
 }
@@ -253,5 +257,94 @@ kbd {
 }
 
 #restart-btn:hover {
+  background: var(--accent-hover);
+}
+
+#highscore-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+}
+
+#highscore-list li {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  color: var(--controls-text);
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+#highscore-list li.new-entry {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+#reset-scores-btn {
+  background: transparent;
+  color: var(--label);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 10px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: color 0.15s, border-color 0.15s;
+  align-self: flex-start;
+}
+
+#reset-scores-btn:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+#new-highscore-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+#new-highscore-badge {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+#name-input {
+  background: var(--kbd-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  width: 160px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+#name-input:focus {
+  border-color: var(--accent);
+}
+
+#save-score-btn {
+  background: var(--accent);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.15s;
+}
+
+#save-score-btn:hover {
   background: var(--accent-hover);
 }

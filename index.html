@@ -47,6 +47,12 @@
           </label>
         </div>
 
+        <div class="panel-section" id="highscores-section">
+          <span class="label">BEST SCORES</span>
+          <ol id="highscore-list"></ol>
+          <button id="reset-scores-btn">Reset</button>
+        </div>
+
         <div class="panel-section controls">
           <span class="label">CONTROLS</span>
           <ul>
@@ -64,6 +70,11 @@
       <div class="overlay-box">
         <p id="overlay-title">GAME OVER</p>
         <p id="overlay-score"></p>
+        <div id="new-highscore-entry" class="hidden">
+          <p id="new-highscore-badge">★ NEW HIGH SCORE!</p>
+          <input type="text" id="name-input" maxlength="12" placeholder="Enter name" autocomplete="off" />
+          <button id="save-score-btn">Save</button>
+        </div>
         <button id="restart-btn">Reiniciar</button>
       </div>
     </div>
