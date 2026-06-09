@@ -255,3 +255,26 @@ kbd {
 #restart-btn:hover {
   background: var(--accent-hover);
 }
+
+#skin-select {
+  background: var(--kbd-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+#skin-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+[data-skin="neon"] #board {
+  background: #000;
+  border-color: #0ff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}

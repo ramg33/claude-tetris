@@ -10,6 +10,8 @@
       if (localStorage.getItem('tetris-theme') === 'light') {
         document.documentElement.dataset.theme = 'light';
       }
+      var skin = localStorage.getItem('tetris-skin');
+      if (skin) document.documentElement.dataset.skin = skin;
     })();
   </script>
 </head>
@@ -36,6 +38,16 @@
         <div class="panel-section">
           <span class="label">NEXT</span>
           <canvas id="next-canvas" width="120" height="120"></canvas>
+        </div>
+
+        <div class="panel-section">
+          <span class="label">SKIN</span>
+          <select id="skin-select">
+            <option value="retro">Retro</option>
+            <option value="neon">Neon</option>
+            <option value="pastel">Pastel</option>
+            <option value="pixel">Pixel Art</option>
+          </select>
         </div>
 
         <div class="panel-section">
